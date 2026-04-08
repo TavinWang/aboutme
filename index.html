@@ -26,7 +26,6 @@ body{
   color:var(--text);
   font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
   overflow-x:hidden;
-  cursor:none;
 }
 
 /* ─── CUSTOM CURSOR ─── */
@@ -49,6 +48,13 @@ body{
   opacity:.5;
 }
 body:hover #cursor{opacity:1}
+@media(hover:hover) and (pointer:fine){
+  body{cursor:none}
+  .btn,.proj-item,.modal-close-btn{cursor:none}
+}
+@media(hover:none),(pointer:coarse){
+  #cursor,#cursor-ring{display:none}
+}
 
 /* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar{width:3px}
@@ -158,7 +164,6 @@ nav{
   text-decoration:none;
   font-weight:600;
   transition:all .25s;
-  cursor:none;
 }
 .btn-fill{
   background:var(--green);
@@ -336,7 +341,6 @@ nav{
   padding:48px 40px;
   position:relative;overflow:hidden;
   transition:background .3s;
-  cursor:none;
 }
 .proj-item:hover{background:var(--bg3)}
 .proj-item::before{
@@ -483,7 +487,6 @@ footer{
   color:var(--text);
   font-size:1.1rem;
   display:flex;align-items:center;justify-content:center;
-  cursor:none;
   transition:border-color .2s,color .2s;
 }
 .modal-close-btn:hover{border-color:var(--green);color:var(--green)}
@@ -860,28 +863,34 @@ footer{
 // ── CURSOR ──
 const cur = document.getElementById('cursor');
 const ring = document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX; my=e.clientY;
-  cur.style.left=mx+'px'; cur.style.top=my+'px';
-});
-(function loop(){
-  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
-  ring.style.left=rx+'px'; ring.style.top=ry+'px';
-  requestAnimationFrame(loop);
-})();
-document.querySelectorAll('a,.proj-item,.exp-item,.skill-block,.btn,.contact-link').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    cur.style.transform='translate(-50%,-50%) scale(2.5)';
-    ring.style.width='60px'; ring.style.height='60px';
-    ring.style.opacity='.3';
+const useCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+if(useCustomCursor){
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX; my=e.clientY;
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
   });
-  el.addEventListener('mouseleave',()=>{
-    cur.style.transform='translate(-50%,-50%) scale(1)';
-    ring.style.width='36px'; ring.style.height='36px';
-    ring.style.opacity='.5';
+  (function loop(){
+    rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,.proj-item,.exp-item,.skill-block,.btn,.contact-link').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      cur.style.transform='translate(-50%,-50%) scale(2.5)';
+      ring.style.width='60px'; ring.style.height='60px';
+      ring.style.opacity='.3';
+    });
+    el.addEventListener('mouseleave',()=>{
+      cur.style.transform='translate(-50%,-50%) scale(1)';
+      ring.style.width='36px'; ring.style.height='36px';
+      ring.style.opacity='.5';
+    });
   });
-});
+}else{
+  cur.style.display='none';
+  ring.style.display='none';
+}
 
 // ── SCROLL REVEAL ──
 const obs=new IntersectionObserver(entries=>{
