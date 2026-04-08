@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>王嘉涛 | 数据开发工程师</title>
+<meta name="theme-color" content="#4d9ef7">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg"/>
+<style>
+/* ─── RESET & BASE ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#4d9ef7;
+  --green-dim:rgba(77,158,247,.12);
+  --green-glow:rgba(77,158,247,.35);
+  --bg:#0a0f1e;
+  --bg2:#0e1528;
+  --bg3:#131c35;
+  --text:#e8edf5;
+  --muted:#8090b0;
+  --border:rgba(77,158,247,.1);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ─── CUSTOM CURSOR ─── */
+#cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--green);
+  border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transition:transform .15s,opacity .15s;
+  box-shadow:0 0 12px var(--green),0 0 24px var(--green-glow);
+  transform:translate(-50%,-50%);
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1px solid var(--green);
+  border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transition:transform .08s,width .2s,height .2s,opacity .2s;
+  transform:translate(-50%,-50%);
+  opacity:.5;
+}
+body:hover #cursor{opacity:1}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--green)}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:28px 60px;
+  mix-blend-mode:normal;
+}
+.nav-logo{
+  font-size:.75rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--green);
+  text-decoration:none;
+  text-shadow:0 0 16px var(--green-glow);
+}
+.nav-links{display:flex;gap:40px}
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;
+  transition:color .2s;
+  position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--green);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{transform:scaleX(1)}
+@media(max-width:640px){nav{padding:20px 24px}.nav-links{display:none}}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-rows:1fr auto;
+  padding:120px 60px 60px;
+  position:relative;
+  overflow:hidden;
+}
+@media(max-width:640px){.hero{padding:100px 24px 40px}}
+
+.hero-bg-text{
+  position:absolute;
+  right:-20px;top:50%;transform:translateY(-50%);
+  font-size:clamp(100px,18vw,220px);
+  font-weight:900;
+  color:rgba(77,158,247,.04);
+  letter-spacing:-.02em;
+  line-height:1;
+  user-select:none;
+  pointer-events:none;
+  white-space:nowrap;
+}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--green);margin-bottom:28px;
+}
+.hero-eyebrow::before{
+  content:'';display:block;width:32px;height:1px;background:var(--green);
+}
+
+.hero-name{
+  font-size:clamp(3rem,8vw,7rem);
+  font-weight:900;
+  line-height:1;
+  letter-spacing:-.03em;
+  margin-bottom:16px;
+}
+.hero-name em{
+  font-style:normal;
+  color:var(--green);
+  text-shadow:0 0 40px var(--green-glow);
+}
+
+.hero-title{
+  font-size:clamp(1rem,2.5vw,1.4rem);
+  color:var(--muted);
+  font-weight:400;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  margin-bottom:48px;
+}
+
+.hero-desc{
+  max-width:520px;
+  color:#a8b2c4;
+  font-size:.92rem;
+  line-height:1.85;
+  margin-bottom:56px;
+}
+
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 28px;
+  font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;
+  font-weight:600;
+  transition:all .25s;
+  cursor:none;
+}
+.btn-fill{
+  background:var(--green);
+  color:#000;
+}
+.btn-fill:hover{
+  box-shadow:0 0 30px var(--green-glow),0 0 60px rgba(77,158,247,.15);
+  transform:translateY(-2px);
+}
+.btn-outline{
+  border:1px solid rgba(255,255,255,.15);
+  color:var(--text);
+}
+.btn-outline:hover{
+  border-color:var(--green);color:var(--green);
+  transform:translateY(-2px);
+}
+
+.hero-bottom{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-top:48px;
+  border-top:1px solid var(--border);
+  flex-wrap:wrap;gap:24px;
+}
+.hero-stats{display:flex;gap:48px;flex-wrap:wrap}
+.hero-stat-num{
+  font-size:1.8rem;font-weight:800;
+  color:var(--green);
+  display:block;
+  text-shadow:0 0 20px var(--green-glow);
+}
+.hero-stat-label{font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+.hero-scroll{
+  display:flex;align-items:center;gap:10px;
+  font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);
+}
+.scroll-line{
+  width:48px;height:1px;background:var(--muted);
+  position:relative;overflow:hidden;
+}
+.scroll-line::after{
+  content:'';position:absolute;top:0;left:-100%;
+  width:100%;height:100%;background:var(--green);
+  animation:slide 2s ease-in-out infinite;
+}
+@keyframes slide{0%{left:-100%}50%{left:0}100%{left:100%}}
+
+/* ─── SECTION BASE ─── */
+.section{padding:120px 60px;max-width:1200px;margin:0 auto}
+@media(max-width:640px){.section{padding:80px 24px}}
+.sec-label{
+  display:flex;align-items:center;gap:14px;
+  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--green);margin-bottom:56px;
+}
+.sec-label::before{
+  content:'';width:24px;height:1px;background:var(--green);
+}
+
+/* ─── MARQUEE ─── */
+.marquee-wrap{
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:18px 0;overflow:hidden;
+  background:var(--bg2);
+}
+.marquee-track{
+  display:flex;gap:0;white-space:nowrap;
+  animation:marquee 22s linear infinite;
+}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.marquee-item{
+  display:inline-flex;align-items:center;gap:24px;
+  padding:0 32px;
+  font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
+}
+.marquee-item .dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px rgba(77,158,247,.7);
+  flex-shrink:0;
+}
+
+/* ─── ABOUT ─── */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;
+}
+@media(max-width:800px){.about-grid{grid-template-columns:1fr;gap:48px}}
+.about-big{
+  font-size:clamp(1.4rem,3vw,2rem);
+  font-weight:700;line-height:1.4;
+  letter-spacing:-.01em;
+}
+.about-big .highlight{color:var(--green)}
+.about-right p{
+  color:#a8b2c4;font-size:.9rem;line-height:1.9;margin-bottom:20px;
+}
+.tag-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px}
+.tag{
+  padding:5px 14px;
+  border:1px solid var(--border);
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  transition:all .2s;
+}
+.tag:hover{border-color:var(--green);color:var(--green)}
+
+/* ─── EXPERIENCE ─── */
+.exp-list{border-top:1px solid var(--border)}
+.exp-item{
+  display:grid;grid-template-columns:180px 1fr 120px;gap:32px;
+  padding:40px 0;border-bottom:1px solid var(--border);
+  align-items:start;
+  transition:background .2s;
+  cursor:default;
+}
+@media(max-width:800px){
+  .exp-item{grid-template-columns:1fr;gap:12px;padding:32px 0}
+}
+.exp-item:hover .exp-role{color:var(--green)}
+.exp-company-wrap{display:flex;align-items:center;gap:14px}
+.exp-company{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.exp-logo{
+  width:46px;height:46px;
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  flex-shrink:0;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+  background:#fff;
+}
+.exp-logo img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+.exp-logo.kuaishou-logo img{
+  transform:scale(1.14);
+  transform-origin:center;
+}
+.exp-logo.kuaishou-logo{
+  background:#ff5a16;
+  border-color:rgba(255,106,45,.2);
+}
+.exp-logo.dewu-logo{
+  background:#040000;
+}
+.exp-logo.dewu-logo img{
+  transform:scale(1.16);
+  transform-origin:center;
+}
+@media(max-width:800px){
+  .exp-company-wrap{margin-bottom:4px}
+}
+.exp-role{font-size:1.1rem;font-weight:700;transition:color .2s;margin-bottom:14px}
+.exp-bullets li{
+  font-size:.85rem;color:#9daabf;line-height:1.7;
+  margin-left:16px;margin-bottom:6px;
+}
+.exp-bullets li::marker{color:var(--green)}
+.exp-date{
+  font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);text-align:right;padding-top:6px;
+}
+@media(max-width:800px){.exp-date{text-align:left}}
+
+/* ─── PROJECTS ─── */
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+@media(max-width:700px){.proj-grid{grid-template-columns:1fr}}
+.proj-item{
+  background:var(--bg2);
+  padding:48px 40px;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+  cursor:none;
+}
+.proj-item:hover{background:var(--bg3)}
+.proj-item::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:var(--green);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s;
+}
+.proj-item:hover::before{transform:scaleX(1)}
+.proj-index{
+  font-size:.68rem;letter-spacing:.15em;color:var(--green);
+  margin-bottom:20px;opacity:.7;
+}
+.proj-name{font-size:1.15rem;font-weight:700;margin-bottom:12px;letter-spacing:-.01em}
+.proj-stack{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.stack-tag{
+  font-size:.65rem;padding:3px 10px;
+  border:1px solid var(--border);
+  color:var(--muted);letter-spacing:.06em;
+}
+.proj-desc{font-size:.82rem;color:#9daabf;line-height:1.75}
+.proj-arrow{
+  position:absolute;bottom:32px;right:32px;
+  font-size:1.2rem;color:var(--green);
+  opacity:0;transform:translateX(-8px);
+  transition:all .25s;
+}
+.proj-item:hover .proj-arrow{opacity:1;transform:translateX(0)}
+
+/* ─── SKILLS ─── */
+.skills-outer{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+@media(max-width:700px){.skills-outer{grid-template-columns:1fr 1fr}}
+@media(max-width:440px){.skills-outer{grid-template-columns:1fr}}
+.skill-block{
+  background:var(--bg2);
+  padding:36px 32px;
+  transition:background .25s;
+}
+.skill-block:hover{background:var(--bg3)}
+.skill-block-name{
+  font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--green);margin-bottom:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.skill-block-name::before{content:'▸';font-size:.5rem}
+.skill-tags{display:flex;flex-direction:column;gap:6px}
+.s-tag{
+  font-size:.82rem;color:#b0bccf;padding:6px 0;
+  border-bottom:1px solid var(--border);
+  transition:color .2s,padding-left .2s;
+}
+.skill-block:hover .s-tag{padding-left:6px}
+.skill-block:hover .s-tag{color:#d0d8e8}
+.s-tag:last-child{border-bottom:none}
+
+/* ─── CONTACT ─── */
+.contact-section{
+  padding:120px 60px;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+  max-width:1200px;margin:0 auto;
+}
+@media(max-width:800px){.contact-section{grid-template-columns:1fr;gap:48px;padding:80px 24px}}
+.contact-big{
+  font-size:clamp(2rem,5vw,4rem);
+  font-weight:900;line-height:1.1;
+  letter-spacing:-.03em;
+}
+.contact-big .g{color:var(--green);text-shadow:0 0 30px var(--green-glow)}
+.contact-links{display:flex;flex-direction:column;gap:16px}
+.contact-link{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 24px;
+  border:1px solid var(--border);
+  text-decoration:none;color:var(--text);
+  transition:all .25s;
+  font-size:.88rem;
+}
+.contact-link:hover{
+  border-color:var(--green);
+  background:var(--green-dim);
+  padding-left:32px;
+}
+.contact-link span{color:var(--muted);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
+.contact-link .arrow{color:var(--green);transition:transform .2s}
+.contact-link:hover .arrow{transform:translateX(4px)}
+
+/* ─── FOOTER ─── */
+footer{
+  border-top:1px solid var(--border);
+  padding:40px 60px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;
+}
+@media(max-width:640px){footer{padding:32px 24px}}
+.footer-logo{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--green)}
+.footer-copy{font-size:.68rem;color:var(--muted);letter-spacing:.1em}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* ─── PROJECT MODAL ─── */
+.modal-backdrop{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.7);
+  backdrop-filter:blur(6px);
+  z-index:500;
+  opacity:0;pointer-events:none;
+  transition:opacity .35s;
+}
+.modal-backdrop.open{opacity:1;pointer-events:all}
+
+.modal-panel{
+  position:fixed;top:0;right:0;bottom:0;
+  width:min(680px,100vw);
+  background:var(--bg2);
+  border-left:1px solid var(--border);
+  z-index:501;
+  overflow-y:auto;
+  transform:translateX(100%);
+  transition:transform .45s cubic-bezier(.22,1,.36,1);
+  scrollbar-width:thin;
+  scrollbar-color:var(--green) transparent;
+}
+.modal-panel.open{transform:translateX(0)}
+
+.modal-close{
+  position:sticky;top:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:24px 40px;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  z-index:1;
+}
+.modal-close-label{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.modal-close-btn{
+  width:36px;height:36px;
+  border:1px solid var(--border);
+  background:none;
+  color:var(--text);
+  font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;
+  transition:border-color .2s,color .2s;
+}
+.modal-close-btn:hover{border-color:var(--green);color:var(--green)}
+
+.modal-body{padding:48px 40px 64px}
+@media(max-width:600px){.modal-body{padding:32px 24px 48px}.modal-close{padding:20px 24px}}
+
+.modal-index{font-size:.65rem;letter-spacing:.2em;color:var(--green);opacity:.7;margin-bottom:12px}
+.modal-title{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:900;letter-spacing:-.02em;margin-bottom:24px;line-height:1.1}
+
+.modal-stack{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
+.modal-stack-tag{
+  padding:5px 14px;
+  border:1px solid rgba(23,247,0,.25);
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green);
+}
+
+.modal-section{margin-bottom:36px}
+.modal-section-title{
+  font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--green);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.modal-section-title::before{content:'';width:16px;height:1px;background:var(--green)}
+.modal-section p{color:#a8b2c4;font-size:.88rem;line-height:1.9}
+.modal-section ul{list-style:none;padding:0}
+.modal-section ul li{
+  color:#a8b2c4;font-size:.88rem;line-height:1.7;
+  padding:8px 0;border-bottom:1px solid var(--border);
+  display:flex;gap:12px;align-items:flex-start;
+}
+.modal-section ul li:last-child{border-bottom:none}
+.modal-section ul li::before{
+  content:'→';color:var(--green);flex-shrink:0;font-size:.8rem;margin-top:2px;
+}
+
+.modal-metrics{
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;
+  margin-bottom:36px;
+}
+.modal-metric{
+  background:var(--bg3);
+  padding:20px 24px;
+}
+.modal-metric-num{
+  font-size:1.6rem;font-weight:800;
+  color:var(--green);
+  text-shadow:0 0 16px var(--green-glow);
+  display:block;margin-bottom:4px;
+}
+.modal-metric-label{font-size:.7rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div id="top"></div>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#top" class="nav-logo">WJT</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#exp">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-text">DATA</div>
+  <div>
+    <div class="hero-eyebrow reveal">数据开发工程师 · Data Engineer</div>
+    <h1 class="hero-name reveal reveal-delay-1">王<em>嘉涛</em></h1>
+    <div class="hero-title reveal reveal-delay-2">Building Data Infrastructure</div>
+    <p class="hero-desc reveal reveal-delay-2">
+      专注大数据全链路开发 3 年，擅长数仓建模、离线计算与 ETL 架构设计。<br/>
+      用数据驱动决策，让每一条数据流转都产生价值。
+    </p>
+    <div class="hero-actions reveal reveal-delay-3">
+      <a href="#contact" class="btn btn-fill">联系我 →</a>
+      <a href="#projects" class="btn btn-outline">查看项目</a>
+    </div>
+  </div>
+  <div class="hero-bottom reveal">
+    <div class="hero-stats">
+      <div>
+        <span class="hero-stat-num">50B+</span>
+        <div class="hero-stat-label">日处理数据量</div>
+      </div>
+      <div>
+        <span class="hero-stat-num">500+</span>
+        <div class="hero-stat-label">调度任务</div>
+      </div>
+      <div>
+        <span class="hero-stat-num">3YRS</span>
+        <div class="hero-stat-label">开发经验</div>
+      </div>
+    </div>
+    <!-- <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll
+    </div> -->
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="dot"></span>Apache Spark</span>
+    <span class="marquee-item"><span class="dot"></span>Apache Flink</span>
+    <span class="marquee-item"><span class="dot"></span>Apache Kafka</span>
+    <span class="marquee-item"><span class="dot"></span>ClickHouse</span>
+    <span class="marquee-item"><span class="dot"></span>Apache Hive</span>
+    <span class="marquee-item"><span class="dot"></span>Apache Hudi</span>
+    <span class="marquee-item"><span class="dot"></span>Apache Iceberg</span>
+    <span class="marquee-item"><span class="dot"></span>Airflow</span>
+    <span class="marquee-item"><span class="dot"></span>dbt</span>
+    <span class="marquee-item"><span class="dot"></span>Python</span>
+    <span class="marquee-item"><span class="dot"></span>Scala</span>
+    <span class="marquee-item"><span class="dot"></span>MySQL</span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item"><span class="dot"></span>Apache Spark</span>
+    <span class="marquee-item"><span class="dot"></span>Apache Flink</span>
+    <span class="marquee-item"><span class="dot"></span>Apache Kafka</span>
+    <span class="marquee-item"><span class="dot"></span>ClickHouse</span>
+    <span class="marquee-item"><span class="dot"></span>Apache Hive</span>
+    <span class="marquee-item"><span class="dot"></span>Apache Hudi</span>
+    <span class="marquee-item"><span class="dot"></span>Apache Iceberg</span>
+    <span class="marquee-item"><span class="dot"></span>Airflow</span>
+    <span class="marquee-item"><span class="dot"></span>dbt</span>
+    <span class="marquee-item"><span class="dot"></span>Python</span>
+    <span class="marquee-item"><span class="dot"></span>Scala</span>
+    <span class="marquee-item"><span class="dot"></span>MySQL</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="sec-label reveal">About Me</div>
+  <div class="about-grid">
+    <div class="about-big reveal">
+      我用<span class="highlight"> 数据 </span>解决
+      真实的<span class="highlight"> 业务 </span>问题，
+      而不只是写查询。
+    </div>
+    <div class="about-right">
+      <p class="reveal">具备 3 年大数据开发经验，熟悉数仓分层建模（ODS/DWD/DWS/ADS）与 ETL 全链路设计，在多家互联网公司主导过亿级用户行为数据的采集、清洗与建模。</p>
+      <p class="reveal">主导实时数仓升级项目，将核心指标延迟从 24h 降至 5min；引入 CDC 增量抽取方案，存储成本降低 40%；建立数据质量监控体系，故障 MTTR 缩短 60%。</p>
+      <div class="tag-list reveal">
+        <span class="tag">数仓建模</span>
+        <span class="tag">实时计算</span>
+        <span class="tag">ETL设计</span>
+        <span class="tag">数据质量</span>
+        <span class="tag">DataOps</span>
+        <span class="tag">数据湖</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section" id="exp" style="padding-top:0">
+  <div class="sec-label reveal">Experience</div>
+  <div class="exp-list">
+    <div class="exp-item reveal">
+      <div class="exp-company-wrap">
+        <div class="exp-logo kuaishou-logo" aria-hidden="true"><img src="./kuaishou.png" alt=""/></div>
+        <div class="exp-company">快手<br>数据平台部</div>
+      </div>
+      <div>
+        <div class="exp-role">数据研发工程师</div>
+        <ul class="exp-bullets">
+          <li>用户行为数仓 ODS/DWD/DWS 分层建模，日均处理 50 亿+ 条数据</li>
+          <li>主导实时数仓升级，Flink + Kafka 替代 T+1 链路，延迟 24h → 5min</li>
+          <li>设计 CDC 增量抽取框架（Debezium），存储成本降低 40%</li>
+          <li>推动 DataOps 规范，建立任务血缘与数据质量监控，MTTR 缩短 60%</li>
+        </ul>
+      </div>
+      <div class="exp-date">2026.02<br>至今</div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-company-wrap">
+        <div class="exp-logo dewu-logo" aria-hidden="true"><img src="./dewu.svg" alt=""/></div>
+        <div class="exp-company">得物<br>风控数据部</div>
+      </div>
+      <div>
+        <div class="exp-role">数据开发工程师</div>
+        <ul class="exp-bullets">
+          <li>交易、商品、营销域数据模型开发，支撑 100+ 张 BI 报表</li>
+          <li>搭建 DolphinScheduler 调度系统，管理 500+ 任务，可用率 99.95%</li>
+          <li>参与数据湖（Hudi on OSS）迁移，推动 HDFS 历史数据冷归档</li>
+        </ul>
+      </div>
+      <div class="exp-date">2021.07<br>2023.02</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="projects" style="padding-top:0;padding-bottom:32px">
+  <div class="sec-label reveal">Projects</div>
+</section>
+<div class="proj-grid">
+  <div class="proj-item reveal">
+    <div class="proj-index">PROJECT 01</div>
+    <div class="proj-name">用户增长实时数仓</div>
+    <div class="proj-stack">
+      <span class="stack-tag">Flink</span><span class="stack-tag">Kafka</span>
+      <span class="stack-tag">ClickHouse</span><span class="stack-tag">Hudi</span>
+    </div>
+    <p class="proj-desc">设计实时 Lambda/Kappa 混合架构，注册、激活、留存等核心指标分钟级可见。ClickHouse 单节点 QPS 2000+，P99 延迟 &lt;200ms。</p>
+    <div class="proj-arrow">→</div>
+  </div>
+  <div class="proj-item reveal reveal-delay-1">
+    <div class="proj-index">PROJECT 02</div>
+    <div class="proj-name">指标平台 & 统一口径</div>
+    <div class="proj-stack">
+      <span class="stack-tag">Python</span><span class="stack-tag">dbt</span>
+      <span class="stack-tag">Airflow</span><span class="stack-tag">MySQL</span>
+    </div>
+    <p class="proj-desc">基于 dbt 构建指标语义层，统一 200+ 业务指标口径，消除跨部门数据口径不一致问题；集成 CI/CD 自动测试与发布。</p>
+    <div class="proj-arrow">→</div>
+  </div>
+  <div class="proj-item reveal reveal-delay-2">
+    <div class="proj-index">PROJECT 03</div>
+    <div class="proj-name">数据质量监控系统</div>
+    <div class="proj-stack">
+      <span class="stack-tag">Spark</span><span class="stack-tag">Great Expectations</span>
+      <span class="stack-tag">Grafana</span>
+    </div>
+    <p class="proj-desc">自研校验框架覆盖完整性、一致性、时效性三类规则，日均扫描 300+ 张表，异常自动告警并阻断下游，问题发现率提升 70%。</p>
+    <div class="proj-arrow">→</div>
+  </div>
+  <div class="proj-item reveal reveal-delay-3">
+    <div class="proj-index">PROJECT 04</div>
+    <div class="proj-name">CDC 增量抽取框架</div>
+    <div class="proj-stack">
+      <span class="stack-tag">Debezium</span><span class="stack-tag">Kafka</span>
+      <span class="stack-tag">Flink CDC</span><span class="stack-tag">Hudi</span>
+    </div>
+    <p class="proj-desc">替代原有全量同步方案，基于 Binlog 实现毫秒级数据同步，存储开销降低 40%，同步链路稳定性从 95% 提升至 99.8%。</p>
+    <div class="proj-arrow">→</div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section class="section" id="skills" style="padding-bottom:32px">
+  <div class="sec-label reveal">Tech Stack</div>
+</section>
+<div class="skills-outer" style="max-width:1200px;margin:0 auto 120px;padding:0 0">
+  <div class="skill-block reveal">
+    <div class="skill-block-name">大数据计算</div>
+    <div class="skill-tags">
+      <div class="s-tag">Apache Spark</div>
+      <div class="s-tag">Apache Flink</div>
+      <div class="s-tag">Apache Hive</div>
+      <div class="s-tag">MapReduce</div>
+    </div>
+  </div>
+  <div class="skill-block reveal reveal-delay-1">
+    <div class="skill-block-name">存储 & 消息队列</div>
+    <div class="skill-tags">
+      <div class="s-tag">Apache Kafka</div>
+      <div class="s-tag">ClickHouse</div>
+      <div class="s-tag">Apache Hudi</div>
+      <div class="s-tag">Apache Iceberg</div>
+      <div class="s-tag">HDFS</div>
+    </div>
+  </div>
+  <div class="skill-block reveal reveal-delay-2">
+    <div class="skill-block-name">数据库</div>
+    <div class="skill-tags">
+      <div class="s-tag">MySQL</div>
+      <div class="s-tag">PostgreSQL</div>
+      <div class="s-tag">Apache Doris</div>
+      <div class="s-tag">Redis</div>
+    </div>
+  </div>
+  <div class="skill-block reveal">
+    <div class="skill-block-name">调度 & 集成</div>
+    <div class="skill-tags">
+      <div class="s-tag">Apache Airflow</div>
+      <div class="s-tag">DolphinScheduler</div>
+      <div class="s-tag">DataX</div>
+      <div class="s-tag">Debezium</div>
+    </div>
+  </div>
+  <div class="skill-block reveal reveal-delay-1">
+    <div class="skill-block-name">语言</div>
+    <div class="skill-tags">
+      <div class="s-tag">Python</div>
+      <div class="s-tag">SQL</div>
+      <div class="s-tag">Scala</div>
+      <div class="s-tag">Shell</div>
+    </div>
+  </div>
+  <div class="skill-block reveal reveal-delay-2">
+    <div class="skill-block-name">工具 & 平台</div>
+    <div class="skill-tags">
+      <div class="s-tag">dbt</div>
+      <div class="s-tag">Grafana</div>
+      <div class="s-tag">Docker</div>
+      <div class="s-tag">Git</div>
+      <div class="s-tag">Apache Superset</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div style="border-top:1px solid var(--border)">
+  <div class="contact-section" id="contact">
+    <div>
+      <div class="sec-label reveal">Contact</div>
+      <div class="contact-big reveal">
+        Let's work<br><span class="g">together.</span>
+      </div>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:wjt@163.com" class="contact-link reveal">
+        <div>
+          <span>Email</span>
+          <div>wjt@163.com</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+      <a href="tel:+861307382****" class="contact-link reveal reveal-delay-1">
+        <div>
+          <span>Phone</span>
+          <div>130-7382-****</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+      <a href="https://github.com/TavinWang" class="contact-link reveal reveal-delay-2" target="_blank" rel="noopener noreferrer">
+        <div>
+          <span>GitHub</span>
+          <div>github.com/TavinWang</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+      <a href="https://www.linkedin.com/in/jiataowang" class="contact-link reveal reveal-delay-3" target="_blank" rel="noopener noreferrer">
+        <div>
+          <span>领英 LinkedIn</span>
+          <div>linkedin.com/in/jiataowang</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">WJT · 数据开发工程师</div>
+  <div class="footer-copy">© 2026 王嘉涛. All Rights Reserved.</div>
+</footer>
+
+<!-- PROJECT MODAL -->
+<div class="modal-backdrop" id="modalBackdrop"></div>
+<div class="modal-panel" id="modalPanel">
+  <div class="modal-close">
+    <span class="modal-close-label">Project Detail</span>
+    <button class="modal-close-btn" id="modalCloseBtn">✕</button>
+  </div>
+  <div class="modal-body" id="modalBody"></div>
+</div>
+
+<script>
+// ── CURSOR ──
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function loop(){
+  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,.proj-item,.exp-item,.skill-block,.btn,.contact-link').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cur.style.transform='translate(-50%,-50%) scale(2.5)';
+    ring.style.width='60px'; ring.style.height='60px';
+    ring.style.opacity='.3';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cur.style.transform='translate(-50%,-50%) scale(1)';
+    ring.style.width='36px'; ring.style.height='36px';
+    ring.style.opacity='.5';
+  });
+});
+
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ── NAV HIDE ON SCROLL ──
+const nav = document.querySelector('nav');
+let lastY=0;
+let navLockUntil=0;
+function showNav() {
+  nav.style.opacity='1';
+  nav.style.transform='none';
+}
+function scrollToSection(hash) {
+  const target = document.querySelector(hash);
+  if(!target) return;
+  const anchor = target.querySelector('.sec-label') || target;
+  const offset = window.innerWidth<=640 ? 72 : 96;
+  const top = Math.max(0, anchor.getBoundingClientRect().top + window.scrollY - offset);
+  window.scrollTo({top,behavior:'smooth'});
+  history.replaceState(null,'',hash);
+}
+document.querySelectorAll('a[href^="#"]').forEach(link=>{
+  link.addEventListener('click',e=>{
+    const hash = link.getAttribute('href');
+    if(!hash || hash==='#' || !document.querySelector(hash)) return;
+    e.preventDefault();
+    navLockUntil=Date.now()+1200;
+    showNav();
+    scrollToSection(hash);
+  });
+});
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  if(Date.now()<navLockUntil){
+    showNav();
+    lastY=y;
+    return;
+  }
+  nav.style.opacity= y>80 && y>lastY ? '0' : '1';
+  nav.style.transform= y>80 && y>lastY ? 'translateY(-100%)' : 'none';
+  lastY=y;
+},{passive:true});
+
+// ── PROJECT MODAL ──
+const projects = [
+  {
+    index: 'PROJECT 01',
+    title: '用户增长实时数仓',
+    stack: ['Apache Flink 1.17','Apache Kafka','ClickHouse 23.x','Apache Hudi','Zookeeper','YARN'],
+    overview: '为支撑公司用户增长业务的精细化运营需求，将原有 T+1 离线数仓升级为实时数仓体系，实现注册、激活、留存、DAU/MAU 等核心增长指标分钟级可见，为产品与运营团队提供实时决策依据。',
+    background: [
+      '原有离线链路延迟 24 小时，运营活动效果无法及时评估',
+      '多条业务线数据孤岛严重，指标口径不统一',
+      '高峰期数据量突增，原有系统扩展性差，延迟骤升至 36h+',
+    ],
+    solution: [
+      '设计 Lambda/Kappa 混合架构：实时层用 Flink 处理 Kafka 数据流，离线层兜底保证数据准确性',
+      '基于 Flink SQL + Catalog 统一数据处理逻辑，降低维护成本',
+      'ClickHouse 作为实时 OLAP 引擎，针对高基数维度设计分布式表与物化视图',
+      'Hudi MOR 表实现准实时更新与历史数据回溯，支持分钟级快照查询',
+      '利用 Kafka 分区与 Flink 并行度动态扩展，应对流量峰值',
+    ],
+    metrics: [
+      { num: '5min', label: '数据延迟（原 24h）' },
+      { num: '2000+', label: 'ClickHouse QPS' },
+      { num: '<200ms', label: 'P99 查询延迟' },
+      { num: '99.9%', label: '链路可用率' },
+    ],
+    result: '上线后支撑了公司多次大促活动的实时数据监控，运营团队可在活动进行中实时调整策略，活动 ROI 提升约 23%。',
+  },
+  {
+    index: 'PROJECT 02',
+    title: '指标平台 & 统一口径管理',
+    stack: ['Python 3.11','dbt Core','Apache Airflow','MySQL','GitLab CI','Superset'],
+    overview: '公司内部存在 200+ 业务指标分散在各团队，计算逻辑不透明，同一指标在不同报表中数值打架，严重影响决策效率。本项目旨在建立全公司统一的指标语义层，让每个指标有唯一的定义、可信的来源和自动化的测试保障。',
+    background: [
+      '各业务线指标逻辑分散在数百个 SQL 文件中，无人维护文档',
+      '同一 "DAU" 指标，不同部门报表相差最高达 15%',
+      '指标变更无审核流程，上线后才发现数据异常',
+    ],
+    solution: [
+      '引入 dbt 构建指标语义层，每个模型对应一个或一组相关指标，强制文档化',
+      '设计三层模型结构：staging（贴源）→ intermediate（中间加工）→ marts（指标输出）',
+      '为每个核心指标编写 dbt test，覆盖唯一性、非空、范围、一致性校验',
+      '集成 GitLab CI：PR 合并前自动运行全量测试，测试失败则阻断合并',
+      '基于 Airflow DAG 实现指标的调度与依赖管理，支持灵活的重跑机制',
+      '对接 Superset，指标发布后自动可在 BI 工具中使用',
+    ],
+    metrics: [
+      { num: '200+', label: '统一指标数量' },
+      { num: '0', label: '跨部门口径争议' },
+      { num: '100%', label: '核心指标测试覆盖率' },
+      { num: '3x', label: '新指标上线提速' },
+    ],
+    result: '项目落地后，数据团队每周用于"对数"的沟通时间从约 8 小时降至接近 0，数据可信度显著提升，推动了公司数据文化的建设。',
+  },
+  {
+    index: 'PROJECT 03',
+    title: '数据质量监控系统',
+    stack: ['Apache Spark 3.x','Great Expectations','Apache Airflow','Grafana','Alertmanager','MySQL'],
+    overview: '随着数仓规模扩大，数据质量问题频发（空值异常、数据迟到、上游 schema 变更等），且往往在下游 BI 报表或业务方反馈时才被发现。本项目建立了覆盖全链路的主动式数据质量监控体系。',
+    background: [
+      '日均数据任务 500+，但缺乏系统性质量巡检，靠人工发现问题',
+      '上游业务系统 schema 变更不通知数仓团队，导致数据断流',
+      '数据问题平均发现时间超过 6 小时，严重影响次日报表准确性',
+    ],
+    solution: [
+      '设计三类规则引擎：完整性（行数、非空率）、一致性（环比/同比偏差）、时效性（数据到达延迟）',
+      '基于 Great Expectations 构建规则配置化框架，业务方可通过 YAML 自定义规则，无需写代码',
+      'Spark 批量扫描历史分区，Flink 实时监控流式数据，双模式覆盖离线和实时场景',
+      '集成 Airflow 调度，质量检测作为上游任务的后置步骤，校验失败则阻断下游依赖',
+      'Grafana 大盘展示全局质量评分，Alertmanager 按严重级别推送告警到飞书/邮件',
+    ],
+    metrics: [
+      { num: '300+', label: '日均扫描表数量' },
+      { num: '70%', label: '问题提前发现率提升' },
+      { num: '<30min', label: '平均问题发现时间（原 6h）' },
+      { num: '1500+', label: '配置化质量规则数' },
+    ],
+    result: '系统上线后数据问题平均发现时间从 6h 缩短至 30min 以内，连续 6 个月无 P0 级数据质量事故，获公司数据治理优秀案例表彰。',
+  },
+  {
+    index: 'PROJECT 04',
+    title: 'CDC 增量抽取框架',
+    stack: ['Debezium 2.x','Apache Kafka','Flink CDC','Apache Hudi','MySQL Binlog','Canal'],
+    overview: '原有数据同步方案采用全量抽取（DataX 定时全表拉取），随着业务数据量增长，每日全量同步时间窗口超过 8 小时，严重挤占计算资源，且存储成本居高不下。本项目实现了基于 Binlog 的增量实时同步体系。',
+    background: [
+      '全量同步单表最大达 20 亿行，8 小时同步窗口严重影响下游任务时间',
+      '全量拉取对线上 MySQL 造成读压力，曾导致业务查询超时',
+      '存储端每日重复写入相同历史数据，HDFS 存储成本持续上涨',
+    ],
+    solution: [
+      '调研并选型 Debezium + Kafka 方案，支持 MySQL / PostgreSQL / MongoDB 多数据源',
+      '设计 Schema Registry 管理 Binlog 事件 schema 演化，上游表结构变更自动适配',
+      '基于 Flink CDC 实现端到端 exactly-once 语义，保障数据准确性',
+      'Hudi MOR 表接收 upsert/delete 事件，支持数据湖级别的增量更新与时间旅行',
+      '构建监控指标体系：同步延迟、Binlog 积压量、事务丢失率实时可观测',
+      '设计断点续传与异常自愈机制，网络抖动或数据库重启后自动恢复',
+    ],
+    metrics: [
+      { num: '<1s', label: '数据同步延迟（原 8h）' },
+      { num: '40%', label: '存储成本降低' },
+      { num: '99.8%', label: '同步链路稳定性（原 95%）' },
+      { num: '0', label: '对线上 DB 读压力影响' },
+    ],
+    result: '框架上线后覆盖公司 80% 的核心业务表，彻底淘汰了全量同步方案，年度存储成本节省约 120 万元，并作为公司内部最佳实践推广。',
+  },
+];
+
+const backdrop = document.getElementById('modalBackdrop');
+const panel    = document.getElementById('modalPanel');
+const body     = document.getElementById('modalBody');
+const closeBtn = document.getElementById('modalCloseBtn');
+
+function openModal(idx) {
+  const p = projects[idx];
+  body.innerHTML = `
+    <div class="modal-index">${p.index}</div>
+    <div class="modal-title">${p.title}</div>
+    <div class="modal-stack">${p.stack.map(s=>`<span class="modal-stack-tag">${s}</span>`).join('')}</div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">项目概述</div>
+      <p>${p.overview}</p>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">背景 & 痛点</div>
+      <ul>${p.background.map(b=>`<li>${b}</li>`).join('')}</ul>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">解决方案</div>
+      <ul>${p.solution.map(s=>`<li>${s}</li>`).join('')}</ul>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">核心成果</div>
+      <div class="modal-metrics">${p.metrics.map(m=>`
+        <div class="modal-metric">
+          <span class="modal-metric-num">${m.num}</span>
+          <div class="modal-metric-label">${m.label}</div>
+        </div>`).join('')}
+      </div>
+      <p>${p.result}</p>
+    </div>
+  `;
+  body.scrollTop = 0;
+  panel.scrollTop = 0;
+  backdrop.classList.add('open');
+  panel.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  backdrop.classList.remove('open');
+  panel.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.proj-item').forEach((el, i) => {
+  el.addEventListener('click', () => openModal(i));
+});
+closeBtn.addEventListener('click', closeModal);
+backdrop.addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>
